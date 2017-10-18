@@ -27,8 +27,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
 
-
-
     }
 
     @Override
@@ -40,13 +38,39 @@ public class MainActivity extends AppCompatActivity {
         //Añadir menu contextual
     }
 
+    public void recuperar(){
+        TextView tv = (TextView) findViewById(R.id.tv);
+
+        try {
+            BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("dialog.txt")));
+            String linea = fin.readLine();
+
+            //Toast.makeText(this,"Done", Toast.LENGTH_SHORT).show();
+
+            while (linea != null) {
+
+                tv.append(linea+'\n');
+                linea = fin.readLine();
+
+
+            }
+
+            fin.close();
+        }
+        catch (Exception e){
+            Toast.makeText(this,"Error al recuperar", Toast.LENGTH_SHORT).show();
+
+        }
+    }
+
+
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
-
         //noinspection SimplifiableIfStatement
         if (id == R.id.guardar) {
             EditText textoId = (EditText) findViewById(R.id.et);
@@ -69,29 +93,19 @@ public class MainActivity extends AppCompatActivity {
         }
 
         if (id == R.id.recuperar) {
+            recuperar();
+        }
 
-            TextView tv = (TextView) findViewById(R.id.tv);
-
+        if(id == R.id.delete) {
             try {
-                BufferedReader fin = new BufferedReader(new InputStreamReader(openFileInput("dialog.txt")));
-                String linea = fin.readLine();
+                FileOutputStream fos = openFileOutput("dialog.txt", Context.MODE_PRIVATE);
+                TextView tv = (TextView) findViewById(R.id.tv);
+                tv.setText("");
 
-                //Toast.makeText(this,"Done", Toast.LENGTH_SHORT).show();
-
-                while (linea != null) {
-                    tv.append(linea+'\n');
-                    linea = fin.readLine();
-
-
-                }
-
-                fin.close();
-            }
-            catch (Exception e){
-                Toast.makeText(this,"Error al recuperar", Toast.LENGTH_SHORT).show();
+            } catch (Exception e) {
+                Toast.makeText(this, "Error al borrar", Toast.LENGTH_SHORT).show();
 
             }
-            return true;
         }
 
         return super.onOptionsItemSelected(item);

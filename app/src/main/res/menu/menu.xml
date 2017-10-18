@@ -6,5 +6,7 @@
         android:id="@+id/guardar"/>
     <item android:title="Recuperar"
         android:id="@+id/recuperar"/>
+    <item android:title="Borrar"
+        android:id="@+id/delete"/>
 
 </menu>
